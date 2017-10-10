@@ -13,6 +13,33 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:api');
+Route::group(['middleware' => 'cors', 'prefix' => '/v1'], function () {
+
+    Route::post('/login', 'AuthController@authenticate');
+
+    Route::get('/logout/{api_token}', 'AuthController@logout');
+
+    Route::get('/articles', 'ArticleController@index');
+
+    Route::get('/articles/{id}', 'ArticleController@show');
+
+    Route::post('/articles/save', 'ArticleController@store');
+
+    Route::post('/articles/update', 'ArticleController@update');
+
+    Route::get('/articles/delete/{id}/{api_token}', 'ArticleController@delete');
+
+    Route::get('/users', 'UserController@index');
+
+    Route::get('/users/{id}', 'UserController@show');
+
+    Route::post('/users/update', 'UserController@update');
+
+    Route::post('/users/create', 'UserController@store');
+
+    Route::post('/users/delete', 'UserController@delete');
+
+    Route::post('/contact/create', 'ContactController@store');
+
+
+});
